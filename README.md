@@ -12,7 +12,11 @@ You just need to clone the repo and place the script somewhere on your `$PATH`.
 
 E.g.
 
-`git clone https://github.com/andoco/unitysync.git`
+`
+mkdir -p ~/github.com
+cd ~/github.com
+git clone https://github.com/andoco/unitysync.git
+`
 
 `ln -s /Users/myuser/github.com/unitysync/unitysync.py ~/bin/unitysync`
 
