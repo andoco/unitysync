@@ -32,6 +32,9 @@ class AssetComparer(metaclass=ABCMeta):
     def copy_asset(self, src, dest):
         print('Copying asset:\n  From: {0}\n  To: {1}'.format(src, dest))
 
+        if not os.path.exists(src):
+            raise Exception('Not found')
+
         if self.preview:
             return
 
@@ -178,8 +181,9 @@ def compare_projects(args, comparer):
     local_assets = os.path.join(local_root(args.dependfile), 'Assets')
 
     for proj in conf['projects']:
-        print('  With project {0}:'.format(proj['path']))
-        origin_assets = os.path.join(proj['path'], 'Assets')
+        proj_path = os.path.expanduser(proj['path'])
+        print('  With project {0}:'.format(proj_path))
+        origin_assets = os.path.join(proj_path, 'Assets')
         
         for asset in proj['assets']:
             origin_path = os.path.join(origin_assets, asset)
