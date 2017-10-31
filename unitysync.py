@@ -132,17 +132,24 @@ class PushComparer(AssetComparer):
     def diff(self, dcmp, asset):
         self.copy_asset(os.path.join(dcmp.right, asset), os.path.join(dcmp.left, asset))
 
+def ignored_file(name):
+    ignored = [".DS_Store"]
+    return name in ignored
+
 def visit_dcmp(dcmp, comparer):
     logging.debug('visiting comparison of {0} and {1}'.format(dcmp.left, dcmp.right))
     
     for name in dcmp.left_only:
-        comparer.left_only(dcmp, name)
+        if not ignored_file(name):
+            comparer.left_only(dcmp, name)
 
     for name in dcmp.right_only:
-        comparer.right_only(dcmp, name)
+        if not ignored_file(name):
+            comparer.right_only(dcmp, name)
 
     for name in dcmp.diff_files:
-        comparer.diff(dcmp, name)
+        if not ignored_file(name):
+            comparer.diff(dcmp, name)
 
     for name, subdcmp in dcmp.subdirs.items():
         visit_dcmp(subdcmp, comparer)
